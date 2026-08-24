@@ -1,1 +1,23 @@
+name: museum_crm
+version: "1.0.0"
+config-version: 2
 
+profile: museum_crm
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["data-tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+clean-targets:
+  - target
+  - dbt_packages
+
+models:
+  museum_crm:
+    staging:
+      +materialized: view
+    marts:
+      +materialized: table
