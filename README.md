@@ -50,7 +50,7 @@
 
 All required scripts available in [data_generation](data_generation) and [dbt_project](dbt_project) folders. View the Lineage Graph [here](lineage_graph/graph_2.png).
 
-**Note:** Replace the password placeholder in [Generator Python file](data_generation/generate_museum_data.py) with your set password before running.
+**IMPORTANT NOTE:** Replace the password placeholder in [Generator Python file](data_generation/generate_museum_data.py) with your set password before running.
 
 
 ## References
