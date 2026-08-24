@@ -1,0 +1,57 @@
+models:
+  - name: mart_member_lifetime_value
+    description: Member lifetime value analysis combining membership spend, donations, and ticket purchases.
+    columns:
+      - name: contact_id
+        description: Primary key - the member's contact ID.
+        data_tests:
+          - unique
+          - not_null
+
+      - name: ltv_rank
+        description: Rank of this member by total lifetime value (membership + donations + ticket spend), highest value first. Ties share the same rank.
+
+      - name: ltv_quartile
+        description: Quartile segment (1 = top 25% by lifetime value, 4 = bottom 25%) computed via NTILE(4), useful for targeting high-value member segments.
+
+  - name: mart_visitor_conversion
+    description: Visitor-to-member conversion analysis.
+    columns:
+      - name: contact_id
+        description: Primary key - the visitor's contact ID.
+        data_tests:
+          - unique
+          - not_null
+
+      - name: avg_days_between_visits
+        description: Average number of days between consecutive visits for this contact, calculated using a lagged visit sequence. Null for contacts with only one visit.
+
+      - name: visit_frequency_quartile
+        description: Quartile ranking (1 = most frequent visitors, 4 = least frequent) based on total visit count across all contacts, computed via NTILE(4).
+
+  - name: mart_donor_segmentation
+    description: Donor segmentation model with tier classification and recency scoring.
+    columns:
+      - name: contact_id
+        description: Primary key - the donor's contact ID.
+        data_tests:
+          - unique
+          - not_null
+          
+  - name: mart_campaign_performance
+    description: Campaign effectiveness analysis with ROI calculation.
+    columns:
+      - name: campaign_id
+        description: Primary key - the campaign identifier.
+        data_tests:
+          - unique
+          - not_null
+
+  - name: mart_ticket_coupon_performance
+    description: Ticket sales and coupon performance analysis by ticket type.
+    columns:
+      - name: ticket_type
+        description: Primary key - the ticket category.
+        data_tests:
+          - unique
+          - not_null
