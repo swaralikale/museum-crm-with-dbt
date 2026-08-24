@@ -1,0 +1,27 @@
+models:
+  - name: stg_contacts
+    description: Cleaned and standardized contact records. Filters out records with null contact_id. Adds contactability flags derived from consent and privacy fields.
+    config:
+      tags: ["email_validation"]
+    columns:
+      - name: contact_id
+        description: Primary key for contacts.
+        data_tests:
+          - unique
+          - not_null
+      - name: email
+        description: Lowercased email address. Null for contacts without email on file.
+        data_tests:
+          - valid_email_format:
+              config:
+                tags: ["email_validation"]
+      - name: communication_preference
+        description: Preferred communication channel.
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ["email", "mail", "phone", "sms", "none"]
+      - name: is_email_contactable
+        description: Derived flag indicating whether the contact can be emailed (has email, gave consent, not opted out).
+      - name: has_valid_email
+        description: Whether the contact has an email address on file.

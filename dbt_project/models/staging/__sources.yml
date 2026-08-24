@@ -1,0 +1,62 @@
+sources:
+  - name: museum_raw
+    description: Raw operational data from the museum CRM system. Contains visitor, membership, donation, ticketing, campaign, and attendance records.
+    schema: raw
+    config:
+      freshness:
+        warn_after: {count: 24, period: hour}
+        error_after: {count: 48, period: hour}
+      loaded_at_field: created_at
+    tables:
+      - name: raw_contacts
+        description: Master contact records for all museum visitors, members, and donors. Includes communication preferences and privacy consent fields.
+        columns:
+          - name: contact_id
+            description: Unique identifier for each contact (format CTK-XXXXX)
+          - name: email
+            description: Contact email address. May be null for walk-in visitors.
+          - name: email_consent
+            description: Whether the contact has opted in to email communications.
+          - name: communication_preference
+            description: Preferred communication channel (email, mail, phone, sms, none).
+          - name: privacy_opt_out
+            description: Whether the contact has requested to be excluded from marketing.
+      - name: raw_memberships
+        description: Membership purchase and renewal records. Links contacts to their membership tier and payment history.
+        columns:
+          - name: membership_id
+            description: Unique identifier for each membership record.
+          - name: contact_id
+            description: Foreign key to raw_contacts.
+          - name: status
+            description: Current membership status.
+      - name: raw_donations
+        description: Donation transaction records. May be linked to a campaign or standalone.
+        columns:
+          - name: donation_id
+            description: Unique identifier for each donation.
+          - name: contact_id
+            description: Foreign key to raw_contacts.
+          - name: campaign_id
+            description: Foreign key to raw_campaigns. Null if not campaign-attributed.
+      - name: raw_tickets
+        description: Ticket purchase records including coupon redemptions and pricing.
+        columns:
+          - name: ticket_id
+            description: Unique identifier for each ticket purchase.
+          - name: contact_id
+            description: Foreign key to raw_contacts.
+          - name: coupon_code
+            description: Applied coupon code. Null if no coupon was used.
+      - name: raw_campaigns
+        description: Marketing campaign definitions with budget and targeting information.
+        columns:
+          - name: campaign_id
+            description: Unique identifier for each campaign.
+      - name: raw_visits
+        description: Visitor attendance log recording each visit to the museum.
+        columns:
+          - name: visit_id
+            description: Unique identifier for each visit record.
+          - name: contact_id
+            description: Foreign key to raw_contacts.

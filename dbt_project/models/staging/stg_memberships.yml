@@ -1,0 +1,23 @@
+models:
+  - name: stg_memberships
+    description: Deduplicated and validated membership records.
+    columns:
+      - name: membership_id
+        description: Primary key for memberships.
+        data_tests:
+          - unique
+          - not_null
+      - name: contact_id
+        description: Foreign key to stg_contacts.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_contacts')
+                field: contact_id
+      - name: status
+        description: Membership status after validation.
+        data_tests:
+          - accepted_values:
+              arguments:
+                values: ["active", "expired", "cancelled", "pending", "unknown"]
