@@ -15,7 +15,7 @@ random.seed(42)
 DB_CONFIG = {
     "dbname": "museum_crm",
     "user": "postgres",
-    "password": "postgres",
+    "password": <your_password>,
     "host": "localhost",
     "port": "5432",
 }
